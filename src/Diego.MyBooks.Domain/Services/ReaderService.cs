@@ -17,7 +17,7 @@ public class ReaderService : BaseService, IReaderService
 
     public async Task Insert(Reader reader)
     {
-        if (reader.IsInvalid())
+        if (!reader.IsValid())
         {
             Notify(reader.ValidationResult);
             return;
@@ -34,11 +34,19 @@ public class ReaderService : BaseService, IReaderService
         await _readerRepository.Insert(reader);
     }
 
-    public async Task Update(Reader reader)
+    public async Task Update(Guid id, Reader updateReader)
     {
-        if (reader.IsInvalid())
+        if (!updateReader.IsValid())
         {
-            Notify(reader.ValidationResult);
+            Notify(updateReader.ValidationResult);
+            return;
+        }
+
+        var reader = await _readerRepository.GetReaderById(id);
+
+        if (reader is null)
+        {
+            Notify("Reader not found");
             return;
         }
 
@@ -49,6 +57,8 @@ public class ReaderService : BaseService, IReaderService
             Notify("Allready exist a Reader with this Name and Email");
             return;
         }
+
+        reader.Update(id, updateReader.Name, updateReader.LastName, updateReader.Email, updateReader.Status);
 
         await _readerRepository.Update(reader);
     }

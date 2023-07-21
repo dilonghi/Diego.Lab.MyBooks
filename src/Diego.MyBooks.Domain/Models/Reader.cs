@@ -1,5 +1,6 @@
 ﻿using Diego.MyBooks.Domain.Models.Validations;
 using Diego.MyBooks.Domain.Models.ValueObjects;
+using System.Xml.Linq;
 
 
 namespace Diego.MyBooks.Domain.Models;
@@ -23,28 +24,19 @@ public class Reader : Entity
         Deleted = false;
     }
 
-    //public Reader(Guid id, string name, string lastName, string email, DateTime insertDate, DateTime updateDate, EReaderStatus status)
-    //{
-    //    Id = id;
-    //    Name = name;
-    //    LastName = lastName;
-    //    Email = new Email(email);
-    //    InsertDate = insertDate;
-    //    UpdateDate = updateDate;
-    //    Status = status;
-    //}
+    public Reader(string name, string lastName, string email, EReaderStatus status)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        LastName = lastName;
+        Email = new Email(email);
+        InsertDate = DateTime.Now;
+        UpdateDate = DateTime.Now;
+        Status = status;
+        Deleted = false;
+    }
 
-    //public Reader(string name, string lastName, Email email, DateTime insertDate, DateTime updateDate, EReaderStatus status)
-    //{
-    //    Name = name;
-    //    LastName = lastName;
-    //    Email = email;
-    //    InsertDate = insertDate;
-    //    UpdateDate = updateDate;
-    //    Status = status;
-    //}
 
-    
     public string Name { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
     public Email Email { get; private set; }
@@ -54,10 +46,21 @@ public class Reader : Entity
     public bool Deleted { get; private set; }
 
 
-    public override bool IsInvalid()
+    public override bool IsValid()
     {
         ValidationResult = new ReaderValidation().Validate(this);
         return ValidationResult.IsValid;
+    }
+
+    public Reader Update(Guid id, string name, string lastName, Email email, EReaderStatus status)
+    {
+        Id = id;
+        Name = name;
+        LastName = lastName;
+        Email = email; 
+        Status =status;
+        UpdateDate = DateTime.Now;
+        return this;
     }
 
     public Reader SetDeletd()

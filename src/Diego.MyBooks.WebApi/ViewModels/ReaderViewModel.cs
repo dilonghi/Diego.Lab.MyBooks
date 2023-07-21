@@ -36,5 +36,6 @@ public class ReaderViewModel
                 
 
     public static implicit operator Reader(ReaderViewModel readerViewModel)
-          => new(readerViewModel.Name, readerViewModel.LastName, readerViewModel.Email);
+          => new(readerViewModel.Name, readerViewModel.LastName, readerViewModel.Email, readerViewModel.Status);
+
 }

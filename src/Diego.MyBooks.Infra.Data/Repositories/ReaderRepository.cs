@@ -18,7 +18,7 @@ public class ReaderRepository : IReaderRepository
     {
         return await Db.Reader
             .AsNoTracking()
-            .Where(x => x.Id == id)
+            .Where(x => x.Deleted == false && x.Id == id)
             .FirstOrDefaultAsync();
     }
 
@@ -27,12 +27,12 @@ public class ReaderRepository : IReaderRepository
         if (id == null)
             return await Db.Reader
                .AsNoTracking()
-               .Where(x => x.Name == name && x.Email.Address == email)
+               .Where(x => x.Deleted == false && x.Name == name && x.Email.Address == email)
                .FirstOrDefaultAsync();
 
         return await Db.Reader
                .AsNoTracking()
-               .Where(x => x.Id != id && x.Name == name && x.Email.Address == email)
+               .Where(x => x.Deleted == false && x.Id != id && x.Name == name && x.Email.Address == email)
                .FirstOrDefaultAsync();
     }
 

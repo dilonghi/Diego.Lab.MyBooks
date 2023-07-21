@@ -49,7 +49,7 @@ public class Book: Entity
 
     public virtual BookInReading BookInReading{ get; set; }
 
-    public override bool IsInvalid()
+    public override bool IsValid()
     {
         ValidationResult = new BookValidation().Validate(this);
         return ValidationResult.IsValid;

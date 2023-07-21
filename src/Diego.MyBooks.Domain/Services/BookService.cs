@@ -16,7 +16,7 @@ public class BookService : BaseService, IBookService
     
     public async Task Insert(Book book)
     {
-        if (book.IsInvalid())
+        if (book.IsValid())
         {
             Notify(book.ValidationResult);
             return;
@@ -34,7 +34,7 @@ public class BookService : BaseService, IBookService
 
     public async Task UpdateInfo(Book book)
     {
-        if (book.IsInvalid())
+        if (book.IsValid())
         {
             Notify(book.ValidationResult);
             return;

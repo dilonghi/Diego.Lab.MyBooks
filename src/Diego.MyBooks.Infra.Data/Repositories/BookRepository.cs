@@ -18,7 +18,7 @@ public class BookRepository : IBookRepository
     {
         return await Db.Book
             .AsNoTracking()
-            .Where(x => x.ReaderId == readerId)
+            .Where(x => x.Deleted == false && x.ReaderId == readerId)
             .ToListAsync();
     }
 
@@ -27,7 +27,7 @@ public class BookRepository : IBookRepository
     {
         return await Db.Book
             .AsNoTracking()
-            .Where(x => x.Id == id)
+            .Where(x => x.Deleted == false && x.Id == id)
             .FirstOrDefaultAsync();
     }
 
@@ -36,12 +36,12 @@ public class BookRepository : IBookRepository
         if (id == null)
             return await Db.Book
                .AsNoTracking()
-               .Where(x => x.Name == name && x.ReaderId == readerId)
+               .Where(x => x.Deleted == false && x.Name == name && x.ReaderId == readerId)
                .FirstOrDefaultAsync();
 
         return await Db.Book
                .AsNoTracking()
-               .Where(x => x.Id != id && x.Name == name && x.ReaderId == readerId)
+               .Where(x => x.Deleted == false && x.Id != id && x.Name == name && x.ReaderId == readerId)
                .FirstOrDefaultAsync();
     }
 
