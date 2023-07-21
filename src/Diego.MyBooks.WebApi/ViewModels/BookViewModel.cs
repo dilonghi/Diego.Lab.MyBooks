@@ -37,6 +37,13 @@ namespace Diego.MyBooks.WebApi.ViewModels
         public static implicit operator BookViewModel(Book book)
           => new(book.Id, book.ReaderId, book.Name, book.Resume, book.Pages, book.Status, book.InsertDate, book.UpdateDate, book.GetFormatBookEnumFromId(book.FormatBookId));
 
+
+        public IEnumerable<BookViewModel> Books(IEnumerable<Book> books)
+        {
+            return (List<BookViewModel>)books;
+        }
+
+
         public static implicit operator Book(BookViewModel bookViewModel)
               => new(bookViewModel.ReaderId, bookViewModel.Name, bookViewModel.Resume, bookViewModel.Pages, bookViewModel.FormatBook);
     }

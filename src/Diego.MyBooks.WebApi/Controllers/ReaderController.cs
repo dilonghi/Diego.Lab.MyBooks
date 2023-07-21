@@ -22,9 +22,19 @@ public class ReaderController : MainController
     [HttpGet("{readerId:guid}/books")]
     public async Task<IActionResult> GetReaderBooks(Guid readerId)
     {
-        var bookViewModel = (BookViewModel)await _bookRepository.GetBooksByReader(readerId);
+        var books = await _bookRepository.GetBooksByReader(readerId);
 
-        return CustomResponse(bookViewModel);
+        if(!books.Any())
+            return CustomResponse();
+
+        var booksViewModel = new List<BookViewModel>();
+
+        foreach (var book in books)
+        {
+            booksViewModel.Add(book);
+        }
+
+        return CustomResponse(booksViewModel);
     }
 
     [HttpGet("{id:guid}")]
@@ -38,7 +48,7 @@ public class ReaderController : MainController
         if (!ModelState.IsValid) 
             return CustomResponse(readerViewModel);
 
-        await _readerService.Insert(readerViewModel);
+        readerViewModel = await _readerService.Insert(readerViewModel);
 
         return CustomResponse(readerViewModel);
     }
@@ -49,7 +59,7 @@ public class ReaderController : MainController
         if (!ModelState.IsValid)
             return CustomResponse(readerViewModel);
 
-        await _readerService.Update(id, readerViewModel);
+        readerViewModel = await _readerService.Update(id, readerViewModel);
 
         return CustomResponse(readerViewModel);
     }

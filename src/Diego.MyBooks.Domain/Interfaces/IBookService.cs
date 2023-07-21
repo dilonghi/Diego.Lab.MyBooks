@@ -5,8 +5,8 @@ namespace Diego.MyBooks.Domain.Interfaces;
 
 public interface IBookService
 {
-    Task Insert(Book book);
-    Task UpdateInfo(Book book);
+    Task<Book> Insert(Book book);
+    Task<Book> UpdateInfo(Guid bookId, Book book);
     Task UpdateStatus(Guid bookId, EBookStatus status);
     Task Delete(Guid id);
 

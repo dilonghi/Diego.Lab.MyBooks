@@ -5,7 +5,7 @@ namespace Diego.MyBooks.Domain.Interfaces;
 
 public interface IReaderService
 {
-    Task Insert(Reader book);
-    Task Update(Guid id, Reader book);
+    Task<Reader> Insert(Reader book);
+    Task<Reader> Update(Guid id, Reader book);
     Task Delete(Guid id);
 }

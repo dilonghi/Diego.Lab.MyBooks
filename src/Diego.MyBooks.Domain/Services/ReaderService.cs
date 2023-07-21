@@ -15,12 +15,12 @@ public class ReaderService : BaseService, IReaderService
 
 
 
-    public async Task Insert(Reader reader)
+    public async Task<Reader> Insert(Reader reader)
     {
         if (!reader.IsValid())
         {
             Notify(reader.ValidationResult);
-            return;
+            return reader;
         }
 
         var duplicateReader = await _readerRepository.GetReaderByNomeAndEmail(reader.Name, reader.Email.Address);
@@ -28,18 +28,20 @@ public class ReaderService : BaseService, IReaderService
         if (duplicateReader is not null)
         {
             Notify("Allready exist a Reader with this Name and Email");
-            return;
+            return reader;
         }
 
         await _readerRepository.Insert(reader);
+
+        return reader;
     }
 
-    public async Task Update(Guid id, Reader updateReader)
+    public async Task<Reader> Update(Guid id, Reader updateReader)
     {
         if (!updateReader.IsValid())
         {
             Notify(updateReader.ValidationResult);
-            return;
+            return updateReader;
         }
 
         var reader = await _readerRepository.GetReaderById(id);
@@ -47,20 +49,23 @@ public class ReaderService : BaseService, IReaderService
         if (reader is null)
         {
             Notify("Reader not found");
-            return;
+            return updateReader;
         }
 
-        var duplicateReader = await _readerRepository.GetReaderByNomeAndEmail(reader.Name, reader.Email.Address, reader.Id);
+        var duplicateReader = await _readerRepository.GetReaderByNomeAndEmail(updateReader.Name, updateReader.Email.Address, id);
 
         if (duplicateReader is not null)
         {
             Notify("Allready exist a Reader with this Name and Email");
-            return;
+            return updateReader;
         }
 
         reader.Update(id, updateReader.Name, updateReader.LastName, updateReader.Email, updateReader.Status);
 
         await _readerRepository.Update(reader);
+
+        return reader;
+
     }
 
     public async Task Delete(Guid id)

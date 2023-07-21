@@ -1,6 +1,5 @@
 ﻿using Diego.MyBooks.Domain.Models.Validations;
 using Diego.MyBooks.Domain.Models.ValueObjects;
-using System.Xml.Linq;
 
 
 namespace Diego.MyBooks.Domain.Models;
@@ -32,7 +31,7 @@ public class Reader : Entity
         Email = new Email(email);
         InsertDate = DateTime.Now;
         UpdateDate = DateTime.Now;
-        Status = status;
+        Status = (int)status == 0 ? EReaderStatus.Active : status;
         Deleted = false;
     }
 

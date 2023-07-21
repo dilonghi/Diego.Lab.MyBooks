@@ -82,6 +82,17 @@ public class Book: Entity
                 _ => Guid.Parse("66da83fd-4591-4c81-b54d-22f95a7eb74a"),
             };
 
+    public Book Update(Guid id, string name, string resume, int pages, Guid formatBookId)
+    {
+        Id = id;
+        Name = name;
+        Resume = resume;
+        Pages = pages;
+        FormatBookId = formatBookId;
+        UpdateDate = DateTime.Now;
+        return this;
+    }
+
     public Book SetDeletd()
     {
         Deleted = true;

@@ -33,7 +33,7 @@ public class ReaderViewModel
           => reader is not null
                 ? new(reader.Id, reader.Name, reader.LastName, reader.Email.Address, reader.InsertDate, reader.UpdateDate, reader.Status)
                 : null;
-                
+
 
     public static implicit operator Reader(ReaderViewModel readerViewModel)
           => new(readerViewModel.Name, readerViewModel.LastName, readerViewModel.Email, readerViewModel.Status);

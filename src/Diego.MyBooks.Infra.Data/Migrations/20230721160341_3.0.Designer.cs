@@ -3,6 +3,7 @@ using System;
 using Diego.MyBooks.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diego.MyBooks.Infra.Data.Migrations
 {
     [DbContext(typeof(MyBooksDbContext))]
-    partial class MyBooksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230721160341_3.0")]
+    partial class _30
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
