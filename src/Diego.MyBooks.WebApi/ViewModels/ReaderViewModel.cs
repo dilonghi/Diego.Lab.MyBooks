@@ -30,7 +30,10 @@ public class ReaderViewModel
     public EReaderStatus Status { get; set; }
 
     public static implicit operator ReaderViewModel(Reader reader)
-          => new(reader.Id, reader.Name, reader.LastName, reader.Email.Address, reader.InsertDate, reader.UpdateDate, reader.Status);
+          => reader is not null
+                ? new(reader.Id, reader.Name, reader.LastName, reader.Email.Address, reader.InsertDate, reader.UpdateDate, reader.Status)
+                : null;
+                
 
     public static implicit operator Reader(ReaderViewModel readerViewModel)
           => new(readerViewModel.Name, readerViewModel.LastName, readerViewModel.Email);

@@ -1,18 +1,8 @@
-using Diego.MyBooks.Domain.Interfaces;
-using Diego.MyBooks.Domain.Services;
-using Diego.MyBooks.Infra.Data.Context;
-using Diego.MyBooks.Infra.Data.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Diego.MyBooks.WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<MyBooksDbContext>(options =>
-        options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 33))));
-
-builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped<IBookService, BookService>();
-
-
+builder.Services.ResolveDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
 
@@ -23,11 +13,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+}
 
 app.UseHttpsRedirection();
 

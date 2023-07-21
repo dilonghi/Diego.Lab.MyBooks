@@ -44,7 +44,7 @@ public class Book: Entity
     public EBookStatus Status { get; private set; }
     public DateTime InsertDate { get; private set; }
     public DateTime UpdateDate { get; private set; }
-    public Guid FormatBookIdId { get; private set; }
+    public Guid FormatBookId { get; private set; }
     public bool Deleted { get; private set; }
 
     public virtual BookInReading BookInReading{ get; set; }
@@ -55,9 +55,20 @@ public class Book: Entity
         return ValidationResult.IsValid;
     }
 
+    public EFormatBook GetFormatBookEnumFromId(Guid id)
+    {
+        return id.ToString() switch
+        {
+            "974a438d-d9dc-405d-9007-414db07af38a" => EFormatBook.Physical,
+            "de926090-1117-48e3-ad57-a4c6580f9d7e" => EFormatBook.Kindle,
+            "59946ed3-2831-4d15-bef4-00cf7c6653c1" => EFormatBook.EBook,
+            "b32e2616-2c85-429b-980c-ec3df6072856" => EFormatBook.WebSite,
+        }; 
+    }
+
     private Book GetFormatBookIdFromEnum(EFormatBook formatBook)
     {
-        FormatBookIdId = FormatBooksId(formatBook);
+        FormatBookId = FormatBooksId(formatBook);
         return this;
     }
 

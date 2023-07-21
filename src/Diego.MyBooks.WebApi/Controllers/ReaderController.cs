@@ -5,50 +5,65 @@ using Microsoft.AspNetCore.Mvc;
 namespace Diego.MyBooks.WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class ReaderController : ControllerBase
+[Route("readers")]
+public class ReaderController : MainController
 {
     private readonly IReaderService _readerService;
     private readonly IReaderRepository _readerRepository;
+    private readonly IBookRepository _bookRepository;
 
-    public ReaderController(IReaderRepository readerRepository, IReaderService readerService)
+    public ReaderController(INotifier _notifier, IReaderRepository readerRepository, IReaderService readerService, IBookRepository bookRepository) : base(_notifier)
     {
         _readerRepository = readerRepository;
         _readerService = readerService;
+        _bookRepository = bookRepository;
     }
 
+    //[HttpGet(Name = "{readerId:guid}/books")]
+    //public async Task<IActionResult> GetReaderBooks(Guid readerId)
+    //{
+    //    var bookViewModel = (BookViewModel)await _bookRepository.GetBooksByReader(readerId);
 
-    [HttpGet(Name = "{id:guid}")]
+    //    return CustomResponse(bookViewModel);
+    //}
+
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetReader(Guid id)
     {
-        var readerViewModel = new ReaderViewModel();
+        var readerViewModel = (ReaderViewModel)await _readerRepository.GetReaderById(id);
 
-        readerViewModel = await _readerRepository.GetReaderById(id);
-
-        return Ok(new { success = true, data = readerViewModel });
+        return CustomResponse(readerViewModel);
     }
 
-    [HttpPost(Name = "")]
+    [HttpPost("")]
     public async Task<IActionResult> Post(ReaderViewModel readerViewModel)
     {
+        if (!ModelState.IsValid) 
+            return CustomResponse(readerViewModel);
+
         await _readerService.Insert(readerViewModel);
 
-        // TO DO implement notification pattern
-
-        return Ok(new { success = true, data = new ReaderViewModel() });
+        return CustomResponse(readerViewModel);
     }
 
-    [HttpPut(Name = "{id:guid}")]
-    public async Task<IActionResult> Put()
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Put(Guid id, ReaderViewModel readerViewModel)
     {
+        if (!ModelState.IsValid)
+            return CustomResponse(readerViewModel);
 
-        return Ok(new { success = true, data = new ReaderViewModel() });
+        await _readerService.Update(readerViewModel);
+
+        return CustomResponse(readerViewModel);
     }
 
-    [HttpDelete(Name = "{id:guid}")]
-    public async Task<IActionResult> Delete()
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
+        await _readerService.Delete(id);
 
-        return Ok(new { success = true, data = new ReaderViewModel() });
+        return CustomResponse();
     }
+
+
 }

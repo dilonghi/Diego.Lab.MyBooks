@@ -6,7 +6,8 @@ namespace Diego.MyBooks.Domain.Services;
 public class ReaderService : BaseService, IReaderService
 {
     private readonly IReaderRepository _readerRepository;
-    public ReaderService(INotifier notificador, 
+
+    public ReaderService(INotifier notificador,
         IReaderRepository readerRepository) : base(notificador)
     {
         _readerRepository = readerRepository;
@@ -56,8 +57,13 @@ public class ReaderService : BaseService, IReaderService
     {
         var reader = await _readerRepository.GetReaderById(id);
 
-        if (reader is not null)
-            await _readerRepository.Delete(reader.SetDeletd());
+        if (reader is null)
+        {
+            Notify("Reader not found");
+            return;
+        }
+
+        await _readerRepository.Update(reader.SetDeletd());
 
     }
 

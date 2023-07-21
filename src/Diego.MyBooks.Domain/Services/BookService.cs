@@ -66,8 +66,8 @@ public class BookService : BaseService, IBookService
     {
         var book = await _bookRepository.GetBookById(id);
 
-        if (book is not null)
-            await _bookRepository.Delete(book.SetDeletd());
+        //if (book is not null)
+        //    await _bookRepository.Delete(book.SetDeletd());
 
         Notify("Book not exist");
     }
