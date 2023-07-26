@@ -1,0 +1,41 @@
+version: "3.8"
+
+volumes:  
+    ae66deaaf5d5d85487dea8ea001b91e536a9ec87065287e29fe407b1eba5929b:
+
+networks:
+  mysqlNET:
+  mybooksNET:
+
+services:
+
+  mysql: 
+    image: "mysql"
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ae66deaaf5d5d85487dea8ea001b91e536a9ec87065287e29fe407b1eba5929b:/var/lib/docker/volumes/ae66deaaf5d5d85487dea8ea001b91e536a9ec87065287e29fe407b1eba5929b/_data
+    networks:
+      - mybooksNET
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+  
+  mybooks:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: mybooks
+    networks:
+      - mysqlNET
+      - mybooksNET
+    ports:
+      - 5000:80
+    environment:
+      - DBHOST=mysql
+    depends_on:
+      - mysql
+
+
+
+
