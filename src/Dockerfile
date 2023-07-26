@@ -7,12 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/Diego.MyBooks.WebApi/Diego.MyBooks.WebApi.csproj", "src/Diego.MyBooks.WebApi/"]
-COPY ["src/Diego.MyBooks.Domain/Diego.MyBooks.Domain.csproj", "src/Diego.MyBooks.Domain/"]
-COPY ["src/Diego.MyBooks.Infra.Data/Diego.MyBooks.Infra.Data.csproj", "src/Diego.MyBooks.Infra.Data/"]
-RUN dotnet restore "src/Diego.MyBooks.WebApi/Diego.MyBooks.WebApi.csproj"
+COPY ["Diego.MyBooks.WebApi/Diego.MyBooks.WebApi.csproj", "Diego.MyBooks.WebApi/"]
+COPY ["Diego.MyBooks.Domain/Diego.MyBooks.Domain.csproj", "Diego.MyBooks.Domain/"]
+COPY ["Diego.MyBooks.Infra.Data/Diego.MyBooks.Infra.Data.csproj", "Diego.MyBooks.Infra.Data/"]
+RUN dotnet restore "Diego.MyBooks.WebApi/Diego.MyBooks.WebApi.csproj"
 COPY . .
-WORKDIR "/src/src/Diego.MyBooks.WebApi"
+RUN find -type d -name bin -prune -exec rm -rf {} \; && find -type d -name obj -prune -exec rm -rf {} \;
+WORKDIR "/src/Diego.MyBooks.WebApi"
 RUN dotnet build "Diego.MyBooks.WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
